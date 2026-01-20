@@ -6,7 +6,7 @@ public class Controller : MonoBehaviour
     public float jumpHeight = 2f;
     private Vector3 velocity;          // Player velocity
     private bool isGrounded;
-    float moveSpeed = 5f;
+    float moveSpeed = 10f;
     CharacterController controller;
     public float gravity = -9.81f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created

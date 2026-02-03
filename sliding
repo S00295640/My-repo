@@ -1,26 +1,34 @@
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.XR;
 
-public class Movementd : MonoBehaviour
+public class RollerMovement : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    
+    public float acceleration = 20f;
+    public float maxSpeed = 8f;
+    public float turnSpeed = 6f;
+
     Rigidbody rb;
-    Camera cam;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.W))
+        float move = Input.GetAxis("Vertical");   // W / S
+        float turn = Input.GetAxis("Horizontal"); // A / D
+
+        // Avancer avec inertie
+        rb.AddForce(transform.forward * move * acceleration, ForceMode.Acceleration);
+
+        // Limite de vitesse
+        if (rb.linearVelocity.magnitude > maxSpeed)
         {
-            Vector3 forward_vector = cam.transform.forward;
-            rb.AddForce(forward_vector, ForceMode.Force);
-            Debug.Log("forward");
+            rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
         }
+
+        // Tourner (pas instantané)
+        transform.Rotate(Vector3.up * turn * turnSpeed);
     }
 }
+
